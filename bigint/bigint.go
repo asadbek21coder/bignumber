@@ -2,29 +2,43 @@ package bigint
 
 import (
 	"errors"
+	"strings"
 )
+
+var ErrorBadInput = errors.New("bad input")
 
 type Bigint struct {
 	value string
 }
 
-func (z *Bigint) Result() string {
-	return z.value
-}
-
-var ErrorBadInput = errors.New("bad input")
+// func (z *Bigint) Result() string {
+// 	return z.value
+// }
 
 func Validate(num string) error {
-
 	// faqat raqamdan iborat bo'lishi kk
 	// noto'g'ri bo'lsa ErrorBadInput qaytarishi kk
+	allowed := "1234567890"
 
+	if !strings.Contains("+-"+allowed, string(num[0])) {
+		return ErrorBadInput
+	}
+
+	for i := 1; i < len(num); i++ {
+		if !strings.Contains(allowed, string(num[i])) {
+			return ErrorBadInput
+		}
+	}
 	return nil
 }
 
 func Simplify(num string) string {
-	// oldida + bo'sa kesish kk
-	// Ko'rinishini soddalashtirishi kk
+	for (string(num[0]) == "0" && len(num) != 1) || (string(num[0]) == "+") {
+		num = num[1:]
+	}
+	for string(num[0]) == "-" && len(num) != 1 && string(num[1]) == "0" {
+		num = num[:1] + num[2:]
+	}
 	return num
 }
 
@@ -35,11 +49,6 @@ func NewInt(num string) (Bigint, error) {
 	}
 	num = Simplify(num)
 	return Bigint{value: num}, nil
-}
-
-func Add(a, b Bigint) Bigint {
-	// a va b ni bir biriga qo'shib qaytarishi kk
-	return Bigint{value: a.value + b.value}
 }
 
 func Subtract(a, b Bigint) Bigint {
