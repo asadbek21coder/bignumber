@@ -2,23 +2,34 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"time"
 
 	"github.com/asadbek21coder/bignumber/bigint"
 )
 
 func main() {
-	// fmt.Println("Hello world")
-	a, err := bigint.NewInt("0000423624624")
+
+	var one, two string
+	fmt.Scan(&one)
+	fmt.Scan(&two)
+
+	start := time.Now()
+
+	a, err := bigint.NewInt(one)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	b, err := bigint.NewInt("+00000468216132684621684621684")
+	b, err := bigint.NewInt(two)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	// fmt.Println(a, b)
 	fmt.Println(bigint.Add(a, b))
+
+	elapsed := time.Since(start)
+	log.Printf("it took %s", elapsed)
 
 }

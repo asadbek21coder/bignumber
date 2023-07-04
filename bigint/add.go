@@ -1,21 +1,21 @@
 package bigint
 
-import (
-	"fmt"
-)
-
 func Add(a, b Bigint) Bigint {
 	var big, small string
+	var sign bool
 
-	if len(a.value) >= len(b.value) {
-		big, small = a.value, b.value
-	} else {
-		big, small = b.value, a.value
+	if string(a.value[0]) == "-" && string(b.value[0]) == "-" {
+		big, small, _ = bigSmall(a.value, b.value)
+		return Bigint{value: "-" + add(big, small)}
+	} else if string(a.value[0]) == "-" || string(b.value[0]) == "-" {
+		big, small, sign = bigSmall(a.value, b.value)
+		if !sign {
+			return Bigint{value: "-" + subtract(big, small)}
+		}
+		return Bigint{value: subtract(big, small)}
 	}
-	fmt.Println(add(big, small))
-	fmt.Println(subtract(big, small))
 
-	
-	return Bigint{}
+	big, small, _ = bigSmall(a.value, b.value)
+	return Bigint{value: add(big, small)}
+
 }
-

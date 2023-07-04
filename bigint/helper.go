@@ -71,3 +71,34 @@ func simplify(num string) string {
 	}
 	return num
 }
+
+func bigSmall(a, b string) (string, string, bool) {
+	var signA, signB bool = true, true
+	if string(a[0]) == "-" {
+		signA = false
+		a = a[1:]
+	}
+	if string(b[0]) == "-" {
+		b = b[1:]
+		signB = false
+	}
+
+	if len(a) > len(b) {
+		return a, b, signA
+	} else if len(a) < len(b) {
+		return b, a, signB
+	}
+	for i := 0; i < len(a); i++ {
+		if a[i] == b[i] {
+			continue
+		}
+		if a[i] > b[i] {
+			return a, b, signA
+		}
+		if a[i] < b[i] {
+			return b, a, signB
+		}
+	}
+
+	return a, b, signA
+}
